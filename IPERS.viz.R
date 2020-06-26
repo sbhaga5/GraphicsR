@@ -15,21 +15,10 @@ library(reasontheme)
 library(pensionviewr)
 library(ggplot2)
 library(tidyverse)
-#library(janitor)
-#library(openxlsx)
 library(tseries)
 library(data.table)
-library(openxlsx)
 library(readr)
 library(rsconnect)
-library(base64enc)
-#Shiny-----------
-library(shiny)
-library(shinyWidgets)
-#library(shinyFiles)
-library(DT)
-library(plotly)
-#devtools::install_github("ropensci/plotly")
 library(dplyr)
 library(plyr)
 
@@ -92,10 +81,16 @@ filteredData <- function(data, y, fy){
 
 ###########
 ####Load Idaho PERS data
+#View(pl$display_name)
 IPERS <- filteredData(pl, "Idaho Public Employee Retirement System", 2001)
 IPERS$year <- as.numeric(IPERS$year)
 #Set to data.frame for visualization
 IPERS <- data.frame(IPERS)
+
+#Graph without a theme
+ggplot(IPERS, aes(x = year, y = uaal))+
+  geom_line(color = "red")+
+  theme_bw()
 
 ###Sample ggplot theme
 plotTheme <- ggplot2::theme(     panel.grid.major = element_blank(),
@@ -113,8 +108,20 @@ ggplot(IPERS, aes(x = year, y = uaal))+
   theme_bw()+
   plotTheme
 
+#### To set reasonTheme you need ot have "Calibri" font downloaded
+#INSTUCTIONS:
+#https://rdrr.io/github/ReasonFoundation/reasontheme/man/calibri_install.html
+calibri_test()
+#[1] "Calibri is imported and registered." -- Means you are ok
+calibri_install()#to install
+
 #########
-###Using debtPlot() function from pensionviewr package (need year, uaal, and funded_ratio)
+#########
+##To set the theme for ppt type:
+set_reason_theme(style = "slide")
+
+###Using debtPlot() 
+###function from pensionviewr package (need year, uaal, and funded_ratio)
 IPERS.debt <- data.table(IPERS %>% select(year, uaal, funded_ratio))
 debtPlot(IPERS.debt)
 
