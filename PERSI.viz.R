@@ -1,6 +1,7 @@
 ####### Reason Foundation
+##### Sample Graphs/Charts in R
 #### By Anil Niraula
-#### Data: Reason
+### Data: Reason
 
 rm(list=ls())
 ###Load/install packages
