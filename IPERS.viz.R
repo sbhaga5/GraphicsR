@@ -94,7 +94,7 @@ filteredData <- function(data, y, fy){
 ####Load Idaho PERS data
 IPERS <- filteredData(pl, "Idaho Public Employee Retirement System", 2001)
 IPERS$year <- as.numeric(IPERS$year)
-#Set to data.frame from visualization
+#Set to data.frame for visualization
 IPERS <- data.frame(IPERS)
 
 ###Sample ggplot theme
