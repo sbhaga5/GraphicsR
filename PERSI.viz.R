@@ -117,7 +117,6 @@ calibri_test()
 calibri_install()#to install
 
 #########
-#########
 ##To set the theme for ppt type:
 set_reason_theme(style = "slide")
 
