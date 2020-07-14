@@ -3,6 +3,8 @@
 #### By Anil Niraula
 ### Data: Reason
 
+#!!!THIS IS A CLONE!!!
+
 rm(list=ls())
 ###Load/install packages
 #R.Version()
@@ -23,7 +25,6 @@ library(rsconnect)
 library(dplyr)
 library(plyr)
 
-!!!THIS IS A CLONE!!!
   
 ##Load list of plans
 pl <- data.table(planList())
