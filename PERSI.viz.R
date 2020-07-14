@@ -3,8 +3,6 @@
 #### By Anil Niraula
 ### Data: Reason
 
-#!!!THIS IS A CLONE!!!
-
 rm(list=ls())
 ###Load/install packages
 #R.Version()
