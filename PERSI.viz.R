@@ -26,11 +26,23 @@ library(plyr)
 ##Load list of plans
 pl <- data.table(planList())
 
+columns <- c("total_pension_liability_dollar", "wage_inflation",
+             "payroll_growth_assumption", "other_contribution_dollar",
+             "other_additions_dollar", "x1_year_investment_return_percentage",
+             "fiscal_year_of_contribution", "statutory_payment_dollar",
+             "statutory_payment_percentage")
+
 #Custom function to load filtered data from the database
-filteredData <- function(data, y, fy){
-  Plan <- pullData(data, y)
+filteredData <- function(plan, y, fy){
+  Plan <- data.table(pullData(plan, y))
+  ##Create missing columns for plans with no data for variables in "columns" vector
+  for (i in (1:length(columns))){
+    if(sum((colnames(Plan) == columns[i]))==0) {
+      Plan[,columns[i] := NA] }
+  }
+  ####
   Plan <- Plan %>%
-    filter(year >= fy)
+    filter(year > fy-1)
   Plan <- Plan %>%
     select(
       year,
@@ -39,7 +51,6 @@ filteredData <- function(data, y, fy){
       return_1yr = x1_year_investment_return_percentage,
       actuarial_cost_method_in_gasb_reporting,
       funded_ratio = actuarial_funded_ratio_percentage,
-      # actuarial_valuation_date_for_gasb_schedules,
       actuarial_valuation_report_date,
       ava = actuarial_value_of_assets_gasb_dollar,
       mva = market_value_of_assets_dollar,
@@ -48,6 +59,8 @@ filteredData <- function(data, y, fy){
       tpl = total_pension_liability_dollar,
       adec = actuarially_required_contribution_dollar,
       adec_paid_pct = actuarially_required_contribution_paid_percentage,
+      statutory = statutory_payment_dollar,#NEW
+      statutory_pct = statutory_payment_percentage,#NEW
       amortizaton_method,
       asset_valuation_method_for_gasb_reporting,
       total_benefit_payments = total_benefits_paid_dollar,#added
@@ -64,7 +77,6 @@ filteredData <- function(data, y, fy){
       er_proj_adec_pct = employers_projected_actuarial_required_contribution_percentage_of_payroll,
       other_contribution = other_contribution_dollar,#added
       other_additions = other_additions_dollar,#added
-      #fy = fiscal_year,
       fy_contribution = fiscal_year_of_contribution,
       inflation_assum = inflation_rate_assumption_for_gasb_reporting,
       arr = investment_return_assumption_for_gasb_reporting,
@@ -77,7 +89,8 @@ filteredData <- function(data, y, fy){
       total_proj_adec_pct = total_projected_actuarial_required_contribution_percentage_of_payroll,
       type_of_employees_covered,
       uaal = unfunded_actuarially_accrued_liabilities_dollar,
-      wage_inflation)
+      wage_inflation
+    )
 }
 
 ###########
