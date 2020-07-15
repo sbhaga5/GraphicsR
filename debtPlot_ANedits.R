@@ -104,7 +104,8 @@ filteredData <- function(data, plan, fy){
 #View(pl$display_name)
 PERSI.debt <- filteredData(pl, "Idaho Public Employee Retirement System", 2001)
 PERSI.debt$year <- as.numeric(PERSI.debt$year)
-
+#Set to data.frame for visualization
+IPERS <- data.frame(PERSI.debt)
 ###########
 
 ####Edit detPlot() manually
@@ -112,8 +113,8 @@ debtPlot <- function(data) {
   data <- data %>%
     dplyr::filter(data$uaal != 0)
   # extrapolate between years linearly
-  extrapo <- stats::approx(data$year, data$uaal,  n = 20000)
-  extrapo2 <- stats::approx(data$year, data$funded_ratio, n = 20000)
+  extrapo <- stats::approx(data$year, data$uaal,  n = 10000)
+  extrapo2 <- stats::approx(data$year, data$funded_ratio, n = 10000)
   graph <-
     data.frame(year = extrapo$x,
                uaal = extrapo$y,
@@ -124,13 +125,12 @@ debtPlot <- function(data) {
                                           .data$uaal < 0 ~ "negative"))
   
   
-  y_minimum <- min(graph$uaal)#Added minimum
+  y_minimum <- min(graph$uaal)
   y_maximum <- max(graph$uaal)
   
   ggplot2::ggplot(graph,
                   ggplot2::aes(x = graph$year)) +
-    ggplot2::geom_area(ggplot2::aes(y = graph$uaal, fill = graph$sign, colour = graph$sign)) +
-    ggplot2::geom_area(ggplot2::aes(y = ifelse((graph$uaal >0), graph$uaal, NULL), fill = palette_reason$Green, colour = palette_reason$Green)) +
+    ggplot2::geom_area(ggplot2::aes(y = graph$uaal, fill = graph$sign)) +#Removed "color" paramater
     ggplot2::geom_line(ggplot2::aes(y = graph$funded_ratio * (y_maximum)),
                        color = palette_reason$GreyBlue,#Referenced Color Palette
                        size = 1.7) +#Increased Size 1.
@@ -177,4 +177,6 @@ debtPlot <- function(data) {
 }
 
 debtPlot(PERSI.debt)
+ggsave(filename="PERSI.debtPlot2", device="png"
+       , height=5, width=5, units="in", dpi=500)
 #####
