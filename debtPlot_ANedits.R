@@ -177,6 +177,4 @@ debtPlot <- function(data) {
 }
 
 debtPlot(PERSI.debt)
-ggsave(filename="PERSI.debtPlot2", device="png"
-       , height=5, width=5, units="in", dpi=500)
 #####
