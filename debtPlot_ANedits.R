@@ -104,8 +104,6 @@ filteredData <- function(data, plan, fy){
 #View(pl$display_name)
 PERSI.debt <- filteredData(pl, "Idaho Public Employee Retirement System", 2001)
 PERSI.debt$year <- as.numeric(PERSI.debt$year)
-#Set to data.frame for visualization
-IPERS <- data.frame(PERSI.debt)
 ###########
 
 ####Edit detPlot() manually
